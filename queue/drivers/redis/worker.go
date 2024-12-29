@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/PratikKumar125/go-queue/handler"
+	"github.com/PratikKumar125/go-queue/queue/handler"
 )
 
 func RedisWorker(wg *sync.WaitGroup, workerId int, rClient *RedisClient, jobHandler *handler.HandlerStruct) {

@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	drivers "github.com/PratikKumar125/go-queue/drivers/redis"
-	"github.com/PratikKumar125/go-queue/handler"
+	drivers "github.com/PratikKumar125/go-queue/queue/drivers/redis"
+	"github.com/PratikKumar125/go-queue/queue/handler"
 )
 
 // func greet() (string, error) {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/PratikKumar125/go-queue/handler"
+	"github.com/PratikKumar125/go-queue/queue/handler"
 	"github.com/redis/go-redis/v9"
 )
 
