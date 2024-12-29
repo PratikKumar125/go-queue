@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/PratikKumar125/go-queue/queue/handler"
@@ -22,7 +23,7 @@ type JobDataStruct struct {
 	Data map[string]any `json:"data"`
 }
 
-type ConnectionInputStruct struct {
+type RedisConnectionInputStruct struct {
 	Addr string
 	Password string
 	DB int
@@ -31,7 +32,7 @@ type ConnectionInputStruct struct {
 
 var ctx = context.Background()
 
-func InitRedisQueue(inputs ConnectionInputStruct) *RedisClient {
+func NewRedisQueue(inputs RedisConnectionInputStruct) *RedisClient {
 	// creating the jobs store for the current queue
 	handler := handler.NewHandler()
 	handler.InitQueueJobs(inputs.Queue)
@@ -82,6 +83,7 @@ func (rClient *RedisClient) AddJobToQueue(queue string, job handler.DispatchJobS
 	}
 
 	// delay provided
+	log.Println("Adding in the delay queue", delayedQueue, job)
 	delayedTimeInUnix := float64(time.Now().Add(time.Second * time.Duration(job.Delay)).Unix())
 	_, err = rClient.Client.ZAdd(ctx, delayedQueue, redis.Z{
 		Member: payload,

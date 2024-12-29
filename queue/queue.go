@@ -7,18 +7,19 @@ import (
 
 type (
 	DispatchJobStruct = handler.DispatchJobStruct
-	CreateInputStruct = handler.CreateInputStruct
+	CreateJobStruct = handler.CreateJobStruct
 	HandlerStruct     = handler.HandlerStruct
+	RedisConnectionInputStruct = drivers.RedisConnectionInputStruct
 )
 
 var (
 	NewHandler = handler.NewHandler
 )
 
-type (
-	RedisClient = drivers.RedisClient
+var (
+	NewRedisQueue = drivers.NewRedisQueue
 )
 
-var (
-	InitRedisQueue = drivers.InitRedisQueue
+type (
+	RedisClient = drivers.RedisClient
 )
