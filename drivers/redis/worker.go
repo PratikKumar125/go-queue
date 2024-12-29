@@ -27,8 +27,8 @@ func RedisWorker(wg *sync.WaitGroup, workerId int, rClient *RedisClient, jobHand
 			result, err := lookup()
 			if err != nil {
 				log.Println("Error in running job", data.JobName, err)
-				if data.Data["Tries"] != nil && data.Data["retryCount"].(int) < data.Data["Tries"].(int) {
-					data.Data["retryCount"] = data.Data["retryCount"].(int) + 1
+				if data.Data["retryCount"].(float64) < float64(data.Tries) {
+					data.Data["retryCount"] = data.Data["retryCount"].(float64) + 1
 					rClient.AddJobToQueue(data.Queue, data)
 				}
 				continue
