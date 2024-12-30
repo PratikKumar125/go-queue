@@ -10,7 +10,7 @@ import (
 
 func greet() (error) { 
     fmt.Println("Hello World")
-    return fmt.Errorf("Dummy error")
+    return fmt.Errorf("dummy error")
 }
 
 func main() {
@@ -23,11 +23,9 @@ func main() {
 	rClient := queue.NewRedisQueue(connectionMap)
 	handler := queue.NewHandler()
 
-	var wg sync.WaitGroup
-	go rClient.StartQueueListener(&wg)
-    go rClient.StartDelayedQueueListener(&wg)
-	go rClient.StartResultProcessor(&wg)
-	rClient.StartWorkers(3, &wg)
+	var queueWg sync.WaitGroup
+    rClient.StartConnection(&queueWg)
+	rClient.StartWorkers(3, &queueWg)
 
 	// Add a job
 	greetJobInputs := queue.CreateJobStruct{
@@ -42,13 +40,13 @@ func main() {
         Data: map[string]any{},
         Queue: "prateek",
         Tries: 2,
-        Delay: 10,
+        Delay: 30,
     }
     _, dispatch1Err := rClient.DispatchJob(dispatchJob1)
     if dispatch1Err != nil {
         log.Println("Error occured", dispatch1Err)
     }
 
-	wg.Wait()
+	queueWg.Wait()
 	fmt.Println("All tasks completed")
 }

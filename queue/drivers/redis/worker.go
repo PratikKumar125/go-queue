@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"sync"
-	"time"
 
 	"github.com/PratikKumar125/go-queue/queue/handler"
 )
@@ -19,7 +18,6 @@ func RedisWorker(wg *sync.WaitGroup, workerId int, rClient *RedisClient, jobHand
 		var data handler.DispatchJobStruct
 		json.Unmarshal([]byte(job), &data)
 		
-		time.Sleep(5 * time.Second)
 		lookup, err := jobHandler.GetJobLookup(data.Queue, data.JobName)
 		if err != nil {
 			log.Println("No lookup method found for job", data.JobName, err)

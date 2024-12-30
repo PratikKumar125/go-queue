@@ -9,6 +9,13 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+func (rClient *RedisClient) StartConnection(wg *sync.WaitGroup) {
+	go rClient.StartQueueListener(wg)
+	go rClient.StartDelayedQueueListener(wg)
+	go rClient.StartResultProcessor(wg)
+	wg.Add(3)
+}
+
 func (rClient *RedisClient) StartQueueListener(wg *sync.WaitGroup) {
 	defer wg.Done()
 	defer close(rClient.Jobs)
@@ -31,9 +38,6 @@ func (rClient *RedisClient) StartQueueListener(wg *sync.WaitGroup) {
 
 func (rClient *RedisClient) StartDelayedQueueListener(wg *sync.WaitGroup) {
 	defer wg.Done()
-	defer close(rClient.Jobs)
-	defer close(rClient.Results)
-
 	log.Println("DELAYED JOBS QUEUE LISTENER STARTED")
 	var delayedQueue = rClient.Queue + ":" + "delayed"
 	
