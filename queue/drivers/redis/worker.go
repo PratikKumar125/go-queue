@@ -22,7 +22,7 @@ func RedisWorker(wg *sync.WaitGroup, workerId int, rClient *RedisClient, jobHand
 		if err != nil {
 			log.Println("No lookup method found for job", data.JobName, err)
 		} else {
-			err := lookup()
+			err := lookup(data.Data)
 			if err != nil {
 				log.Println("Error in running job", data.JobName, err)
 				if data.Data["retryCount"].(float64) < float64(data.Tries) {

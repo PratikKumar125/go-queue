@@ -57,7 +57,7 @@ func (handler *HandlerStruct) CreateJob(inputs CreateJobStruct) (bool, error){
 	return false, fmt.Errorf("no queue initialized yet in the jobs")
 }
 
-func (handler *HandlerStruct) GetJobLookup(queue string, jobName string) (func() (error), error) {
+func (handler *HandlerStruct) GetJobLookup(queue string, jobName string) (func(map[string]any) (error), error) {
 	log.Println(handler.jobs, queue)
 	val, ok := handler.jobs[queue][jobName]
 	if !ok {
@@ -65,7 +65,7 @@ func (handler *HandlerStruct) GetJobLookup(queue string, jobName string) (func()
 	}
 
 	// assert that the value as a function
-	lookup, ok := val.(func() (error))
+	lookup, ok := val.(func(data map[string]any) (error))
 	if !ok {
 		return nil, fmt.Errorf("lookup method for job '%s' is not a valid function", jobName)
 	}

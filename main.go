@@ -8,8 +8,8 @@ import (
 	"github.com/PratikKumar125/go-queue/queue"
 )
 
-func greet() (error) { 
-    fmt.Println("Hello World")
+func greet(data map[string]any) (error) { 
+    fmt.Println(data, "<<<<<DATA RECEIVEDD")
     return fmt.Errorf("dummy error")
 }
 
@@ -37,10 +37,13 @@ func main() {
 
     dispatchJob1 := queue.DispatchJobStruct{
         JobName: "greet",
-        Data: map[string]any{},
+        Data: map[string]any{
+            "name": "Prateek",
+            "email": "prateek@378.com",
+        },
         Queue: "prateek",
         Tries: 2,
-        Delay: 30,
+        Delay: -1,
     }
     _, dispatch1Err := rClient.DispatchJob(dispatchJob1)
     if dispatch1Err != nil {
